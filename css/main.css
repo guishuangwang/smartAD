@@ -1,0 +1,415 @@
+html,
+body {
+    width: 100%;
+    height: 100%;
+}
+
+body {
+    margin: 0;
+}
+
+.clearfix:after {
+    content: ".";
+    display: block;
+    height: 0;
+    clear: both;
+    visibility: hidden;
+}
+
+#header {
+    position: absolute;
+    width: 100%;
+    z-index: 53;
+    top: 0;
+    height: 64px;
+    background: #1a1a20;
+}
+
+#header #header-wrapper {
+    padding: 0 0 0 22px;
+}
+
+#header #app-link {
+    position: relative;
+    z-index: 10;
+    float: left;
+    margin-left: 20px;
+    font-size: 14px;
+    line-height: 64px;
+}
+
+.font-open-sans {
+    font-family: "Microsoft YaHei", "noto_sansregular", sans-serif;
+}
+
+#header #app-link a {
+    display: block;
+    float: left;
+    padding: 0 18px;
+    color: #96969a;
+    background: none;
+    cursor: pointer;
+    text-decoration: none;
+}
+
+#header #app-link a:hover {
+    color: #ac975e;
+    background-color: rgba(200, 200, 200, 0.2);
+}
+
+#header #app-link a.active {
+    color: #ac975e;
+    background: none;
+}
+
+#header #header-toolbar.active {
+    display: block;
+    animation: header-toolbar-fadeIn-ani 1s;
+    -webkit-animation: header-toolbar-fadeIn-ani 1s;
+    -moz-animation: header-toolbar-fadeIn-ani 1s;
+}
+
+#header #header-toolbar {
+    position: absolute;
+    display: none;
+    left: 426px;
+    right: 164px;
+    transition: all 0.3s;
+}
+
+.font-aleo {
+    font-family: "Microsoft Yahei", "noto_sansregular", "Arial", "SongTi", "MingLiU", "Abril Fatface", "Arimo", "Trocchi", sans-serif;
+    font-weight: 300;
+}
+
+#header #header-toolbar #header-toolbar-wrapper {
+    position: relative;
+    width: fit-content;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+#header #header-toolbar #header-toolbar-wrapper .header-toolbar-main {
+    float: left;
+    position: relative;
+    display: block;
+    width: 54px;
+    height: 51px;
+    padding: 13px 5px 0;
+    font-size: 12px;
+    text-align: center;
+    color: #96969a;
+    white-space: nowrap;
+    cursor: pointer;
+}
+
+.icon-22 {
+    display: block;
+    margin: 0 auto;
+    width: 22px;
+    height: 22px;
+    background: url(../images/web_icon.png) no-repeat;
+}
+
+#header #header-toolbar #header-toolbar-wrapper .header-toolbar-main .toolbar-open {
+    background-position: 0 0px;
+}
+#header #header-toolbar #header-toolbar-wrapper .header-toolbar-main .toolbar-open:hover {
+    background-position: 0 -22px;
+}
+#header #header-toolbar #header-toolbar-wrapper .header-toolbar-main.disable .toolbar-undo {
+    background-position: -66px 0px;
+}
+#header #header-toolbar #header-toolbar-wrapper .header-toolbar-main.disable .toolbar-undo:hover {
+    background-position: -66px -22px;
+}
+#header #header-toolbar #header-toolbar-wrapper .header-toolbar-main.disable .toolbar-redo {
+    background-position: -88px 0px;
+}
+#header #header-toolbar #header-toolbar-wrapper .header-toolbar-main.disable .toolbar-redo:hover {
+    background-position: -88px -22px;
+}
+#header #header-toolbar #header-toolbar-wrapper .header-toolbar-main .toolbar-delete {
+    background-position: -264px 0px;
+}
+#header #header-toolbar #header-toolbar-wrapper .header-toolbar-main .toolbar-delete:hover {
+    background-position: -264px -22px;
+}
+#header #header-toolbar #header-toolbar-wrapper .header-toolbar-main .toolbar-download {
+    background-position: -132px 0px;
+}
+#header #header-toolbar #header-toolbar-wrapper .header-toolbar-main .toolbar-download:hover {
+    background-position: -132px -22px;
+}
+#header #header-toolbar #header-toolbar-wrapper .header-toolbar-main span {
+    display: inline-block;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    -o-text-overflow: ellipsis;
+    white-space: nowrap;
+    width: 100%;
+    text-align: center;
+}
+#header #header-toolbar #header-toolbar-wrapper .header-toolbar-main:hover {
+    color: #ac975e;
+}
+#main {
+    position: absolute;
+    top: 64px;
+    left: 0;
+    bottom: 0px;
+    right: 0;
+    overflow: hidden;
+}
+
+#nav {
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 70px;
+    background: #1a1a20;
+    font-family: "noto_sansregular", "Microsoft Yahei", "Arial", "SongTi", "MingLiU", "Abril Fatface", "Arimo", "Trocchi", sans-serif;
+}
+
+#nav-wrapper {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+}
+
+#nav-wrapper a,
+#nav-wrapper .nav-bottom .nav-item {
+    position: relative;
+    display: block;
+    width: 70px;
+    height: 44px;
+    padding: 15px 0 11px;
+    font-family: "noto_sansregular", "Microsoft Yahei", "Arial", "SongTi", "MingLiU", "Abril Fatface", "Arimo", "Trocchi", sans-serif;
+    font-size: 12px;
+    line-height: 14px;
+    color: #96969a;
+    text-align: center;
+    cursor: pointer;
+}
+
+#nav-wrapper a.active,
+#nav-wrapper .nav-bottom .nav-item.active {
+    color: #ac975e;
+    background: #ebebf0;
+}
+
+.nav-icon {
+    display: block;
+    margin: 0 auto;
+    width: 24px;
+    height: 24px;
+    background: url(../images/web_icon_2.png) top left no-repeat;
+}
+
+.nav-icon.icon-template {
+    background-position: 0px 0px;
+}
+
+.nav-icon.icon-stickers {
+    background-position: -24px 0px;
+}
+
+.nav-icon.icon-settings {
+    background-position: -120px 0px;
+}
+
+#nav-wrapper a nav-title,
+#nav-wrapper .nav-bottom .nav-item nav-title {
+    width: 100%;
+    display: inline-block;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    -o-text-overflow: ellipsis;
+    white-space: nowrap;
+    transition: none;
+    -moz-transition: none;
+    -webkit-transition: none;
+}
+
+#nav-wrapper .nav-bottom {
+    position: absolute;
+    bottom: 16px;
+}
+
+#toolbar {
+    position: absolute;
+    left: 70px;
+    top: 0;
+    bottom: 0;
+    width: 356px;
+    background: #ebebf0;
+    box-shadow: 1px 0px 3px rgba(0, 0, 0, 0.03);
+    z-index: 13;
+}
+
+.toolbar {
+    position: absolute;
+    left: 0px;
+    right: 0px;
+    top: 0px;
+    bottom: 0px;
+}
+
+.toolbar-title {
+    margin: 20px 18px 20px 4px;
+    font-family: "noto_sansregular", "Microsoft YaHei", sans-serif;
+    text-align: center;
+    font-size: 14px;
+    text-shadow: 1px 0 0 #000;
+    color: #000;
+    line-height: 20px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+}
+
+.toolbar .toolbar-list {
+    position: absolute;
+    top: 16px;
+    bottom: 16px;
+    left: 24px;
+    right: 10px;
+    overflow: hidden;
+}
+
+#canvas {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 426px;
+    right: 164px;
+    overflow: hidden;
+}
+
+#theCanvasHolder {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+}
+
+.canvas-container {
+    width: 1090px;
+    height: 811px;
+    position: relative;
+    user-select: none;
+}
+#panel {
+    position: absolute;
+    right: -164px;
+    top: 0;
+    /* bottom: 100px; */
+    bottom: 0px;
+    width: 164px;
+    box-sizing: border-box;
+    padding: 0 12px;
+    background: #ebebf0;
+    box-shadow: -1px 0px 3px rgba(0, 0, 0, 0.03);
+}
+.upload-panel.show {
+    transform: translateX(-164px);
+}
+.upload-panel {
+    transition: all 0.2s ease-out;
+}
+#panel-show-hide-btn {
+    position: absolute;
+    width: 16px;
+    height: 88px;
+    left: -15px;
+    top: 50%;
+    margin-top: -44px;
+    background: url(../images/upload-panel-expand-collapse-btn.png) no-repeat;
+    cursor: pointer;
+}
+#panel-show-hide-btn {
+    background-position-y: 0;
+}
+#panel-show-hide-btn.toHide {
+    background-position-x: 0;
+}
+#panel-show-hide-btn.toShow {
+    background-position-x: -16px;
+}
+#panel-show-hide-btn:hover {
+    background-position-y: -88px;
+}
+
+.upload-manage {
+    width: 100%;
+    height: 100%;
+    position: relative;
+}
+.add-btn {
+    margin: 10px 0;
+    cursor: pointer;
+    color: black;
+    font-size: 18px;
+    text-align: center;
+    width: 100%;
+    height: 30px;
+    line-height: 30px;
+    border: 2px dashed #ccc;
+}
+.upload-list {
+    width: 100%;
+    /* height: 100%; */
+    height: 700px;
+    overflow: scroll;
+}
+.upload-item {
+    position: relative;
+    cursor: pointer;
+    width: 100%;
+    margin: 10px 0;
+}
+.upload-item-cover {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    display: none;
+    transition: all .3s;
+    -webkit-transition: all .3s;
+    -moz-transition: all .3s;
+    border: 4px solid rgba(255, 255, 255, 1);
+    cursor: pointer;
+}
+.upload-item-delete {
+    position: absolute;
+    width: 10px;
+    height: 10px;
+    top: 6px;
+    right: 6px;
+    background: url(../images/delete_icon.png) 0 0 no-repeat;
+}
+.upload-item-delete:hover {
+    background: url(../images/delete_icon.png) 0 0 no-repeat;
+}
+#trash-box {
+    position: absolute;
+    left: 12px;
+    bottom: 0;
+    right: 12px;
+    text-align: center;
+    padding: 9px 0;
+    line-height: 23px;
+    font-size: 12px;
+    border-top: 1px solid #c8c8c8;
+    color: #8f8f94;
+    cursor: pointer;
+}
+#trash-box .icon-trash {
+    margin: 0 0 -5px;
+    display: inline-block;
+    background-position: -264px 0px;
+}
