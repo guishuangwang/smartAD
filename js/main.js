@@ -72,30 +72,56 @@ $(function() {
             $('#panel').addClass('show');
         }
     });
-    //图片鼠标滑过效果
-    function imagesAddEvents() {
-        $('div.upload-item').on('mouseover', function(e) {
-            $(this).find('.upload-item-cover').show();
+    
+    // function imagesAddEvents() {
+    //     $('div.upload-item').on('mouseover', function(e) {
+    //         $(this).find('.upload-item-cover').show();
+    //     });
+    //     $('div.upload-item').on('mouseleave', function (e) { 
+    //         $(this).find('.upload-item-cover').hide();
+    //     });
+    //     $('div.upload-item-delete').on('click', function(e) {
+    //         $(this).parents('div.upload-item').remove();
+    //         e.stopPropagation();
+    //     });
+    //     $('div.upload-item').on('click', function(e) {
+    //         //点击之后添加到中间canvas画布
+    //         //居中功能 tbd.
+    //         var imgElement = $(this).find('img')[1];
+    //         var imgInstance = new fabric.Image(imgElement, {
+    //             left: 100,
+    //             top: 100,
+    //         });
+    //         imgInstance.scale(0.3);
+    //         canvas.add(imgInstance);
+    //     });
+    // }
+    
+    //事件委托处理动态添加dom
+    $('div.upload-list').on('mouseover', '.upload-item', function(e) {
+        //图片鼠标滑过效果    
+        $(this).find('.upload-item-cover').show();
+    });
+    $('div.upload-list').on('mouseleave', '.upload-item', function(e) {
+        //图片鼠标滑过效果    
+        $(this).find('.upload-item-cover').hide();
+    });    
+    $('div.upload-list').on('click', '.upload-item-delete', function(e) {
+        //删除预览图片  
+        $(this).parents('div.upload-item').remove();
+        e.stopPropagation();
+    });     
+    $('div.upload-list').on('click', '.upload-item', function(e) {
+        //点击之后添加到中间canvas画布
+        //居中功能 tbd.
+        var imgElement = $(this).find('img')[1];
+        var imgInstance = new fabric.Image(imgElement, {
+            left: 100,
+            top: 100,
         });
-        $('div.upload-item').on('mouseleave', function (e) { 
-            $(this).find('.upload-item-cover').hide();
-        });
-        $('div.upload-item-delete').on('click', function(e) {
-            $(this).parents('div.upload-item').remove();
-            e.stopPropagation();
-        });
-        $('div.upload-item').on('click', function(e) {
-            //点击之后添加到中间canvas画布
-            //居中功能 tbd.
-            var imgElement = $(this).find('img')[1];
-            var imgInstance = new fabric.Image(imgElement, {
-                left: 100,
-                top: 100,
-            });
-            imgInstance.scale(0.3);
-            canvas.add(imgInstance);
-        });
-    }
+        imgInstance.scale(0.3);
+        canvas.add(imgInstance);        
+    });
 
     //打开图片文件
     $('div.add-btn').on('click', function(e) {
@@ -123,8 +149,7 @@ $(function() {
                 '</div>'
             ].join('');                  
             $('div.upload-list').append(previewHtml);
-            imagesAddEvents();
-            
+            // imagesAddEvents();
         }
     });
     //删除选中对象
