@@ -6,7 +6,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>智能广告</title>
-    <link rel="stylesheet" type="text/css" href="./css/main.css"/>
+    <link rel="stylesheet" type="text/css" href="./css/colpick.css" />
+    <link rel="stylesheet" type="text/css" href="./css/main.css" />
 </head>
 
 <body>
@@ -42,7 +43,7 @@
                         <a class="header-toolbar-main " id="header-toolbar-delete" title="删除" style="display: block;">
                             <i class="icon-22 toolbar-delete"></i>
                             <span>删除</span>
-                        </a>                        
+                        </a>
                         <a class="header-toolbar-main " id="header-toolbar-save" title="保存" style="display: block;">
                             <i class="icon-22 toolbar-download"></i>
                             <span>保存</span>
@@ -56,11 +57,15 @@
             <nav id="nav">
                 <div id="nav-wrapper" class="font-aleo">
                     <div class="nav-top" style="display: block;">
-                        <a data-target="/design/4b251720-3647-11e8-9e99-39137af5c2bf/template" class="sub-nav-note active clearfix" style="display: block;">
+                        <a data-target="toolbar-template" class="sub-nav-note active clearfix" style="display: block;">
                             <i class="nav-icon icon-template"></i>
                             <nav-title>模板</nav-title>
                         </a>
-                        <a data-target="/design/4b251720-3647-11e8-9e99-39137af5c2bf/sticker" class="sub-nav-note clearfix">
+                        <a data-target="toolbar-text" class="sub-nav-note clearfix">
+                            <i class="nav-icon icon-text"></i>
+                            <nav-title>文字</nav-title>
+                        </a>
+                        <a data-target="toolbar-segmentation" class="sub-nav-note clearfix">
                             <i class="nav-icon icon-stickers"></i>
                             <nav-title>抠图</nav-title>
                         </a>
@@ -76,7 +81,7 @@
             </nav>
 
             <div id="toolbar">
-                <div class="toolbar toolbar-show">
+                <div class="toolbar toolbar-show" id="toolbar-template">
                     <div class="toolbar-cover" style="display: none;"></div>
                     <div class="toolbar-loading" style="opacity: 0; top: 15%; display: none;">
                         <div class="loading-round" style="top: 35%; opacity: 0;">
@@ -84,11 +89,39 @@
                             <i>加载中…</i>
                         </div>
                     </div>
-                    <div class="toolbar-title">标题</div>
+                    <div class="toolbar-title">模板</div>
                     <div class="toolbar-list" style="top: 60px;">
 
                     </div>
                 </div>
+                <div class="toolbar toolbar-hide" id="toolbar-text" >
+                    <div class="toolbar-cover" style="display: none;"></div>
+                    <div class="toolbar-title">文字</div>
+                    <div class="toolbar-list" style="top: 60px;">
+                        <p>
+                            <label>输入文字：</label>
+                            <input type="text" id="typeText"/>
+                        </p>                        
+                        <p>
+                            <label>字体大小：</label>
+                            <input type="number" id="fontSize" min="10" max="200"/>
+                        </p>
+                        <p>
+                            <label>选择颜色：</label>
+                            <input type="text" id="picker"/>
+                        </p>
+                        <p id="addTextToCanvas">
+                            <span id="addText">点击添加文字</span>
+                        </p>
+                    </div>
+                </div>
+                <div class="toolbar toolbar-hide" id="toolbar-segmentation">
+                    <div class="toolbar-cover" style="display: none;"></div>
+                    <div class="toolbar-title">抠图</div>
+                    <div class="toolbar-list" style="top: 60px;">
+
+                    </div>
+                </div>                                
             </div>
 
             <div id="canvas" class="center-canvas " style="right: 164px;">
@@ -110,7 +143,7 @@
                     <a id="trash-box">
                         <i class="icon-22 icon-trash"></i>
                         清除所有图片
-                    </a>                    
+                    </a>
                 </div>
             </div>
         </div>
@@ -119,6 +152,7 @@
     <script type="text/javascript" src="./js/jquery-3.3.1.min.js"></script>
     <script type="text/javascript" src="./js/fabric.js"></script>
     <script type="text/javascript" src="./js/canvas2image.js"></script>
+    <script type="text/javascript" src="./js/colpick.js"></script>
     <script type="text/javascript" src="./js/main.js"></script>
 </body>
 

@@ -1,6 +1,21 @@
 $(function() {
     var canvas = new fabric.Canvas('smartAdCanvas');
     var nativeCanvas = document.getElementById('smartAdCanvas');
+    //初始化颜色选择器
+    $('#picker').colpick({
+        layout: 'hex',
+        submit: 0,
+        colorScheme: 'dark',
+        onChange: function (hsb, hex, rgb, el, bySetColor) {
+            $(el).css('border-color', '#' + hex);
+            // Fill the text box just if the color was set using the picker, and not the colpickSetColor function.
+            if (!bySetColor) $(el).val(hex);
+            console.log('color is: ', this.value);
+        }
+    }).keyup(function () {
+        $(this).colpickSetColor(this.value);
+        console.log('color is:', this.value)
+    });
     // //add rect.
     // var rect = new fabric.Rect({
     //     top: 100,
@@ -63,7 +78,9 @@ $(function() {
     $('#nav-wrapper a').on('click', function(e) {
         $(this).addClass('active');
         $(this).siblings().removeClass('active');
-        
+        var toolBarId = $(this).attr('data-target');
+        $('div#toolbar').children('.toolbar').hide();
+        $('div#toolbar').find('div#' + toolBarId).show();
     });
     //右侧panel 展开控制
     $('#panel-show-hide-btn').on('click', function(e) {
@@ -149,4 +166,19 @@ $(function() {
         //这里宽高直接取nativeCanvas属性会出现下载失败，感觉是fabric添加的元素宽高有关
         Canvas2Image.saveAsPNG(nativeCanvas, 1090, 811, fileName);
     });     
+
+    //添加文字
+    $('div.toolbar-list p#addTextToCanvas span').on('click', function(e) {
+        //add text.
+        var txt = $('input#typeText').val();
+        var fontSize = $('input#fontSize').val();
+        var color = '#' + $('input#picker').val();
+        var text = new fabric.IText(txt, {
+            left: 200,
+            top: 50,
+            fontSize: fontSize,
+            stroke: color
+        });
+        canvas.add(text);
+    });
 })

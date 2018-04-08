@@ -210,7 +210,9 @@ body {
 .nav-icon.icon-template {
     background-position: 0px 0px;
 }
-
+.nav-icon.icon-text {
+    background-position: -48px 0px;
+}
 .nav-icon.icon-stickers {
     background-position: -24px 0px;
 }
@@ -245,7 +247,7 @@ body {
     width: 356px;
     background: #ebebf0;
     box-shadow: 1px 0px 3px rgba(0, 0, 0, 0.03);
-    z-index: 13;
+    z-index: 0;
 }
 
 .toolbar {
@@ -254,6 +256,12 @@ body {
     right: 0px;
     top: 0px;
     bottom: 0px;
+}
+.toolbar-show {
+    display: block;
+}
+.toolbar-hide {
+    display: none;
 }
 
 .toolbar-title {
@@ -412,4 +420,30 @@ body {
     margin: 0 0 -5px;
     display: inline-block;
     background-position: -264px 0px;
+}
+
+/* color pick */
+#picker {
+	margin:0;
+	padding:0;
+	border:0;
+	width:70px;
+	height:20px;
+	border-right:20px solid green;
+	line-height:20px;
+}
+
+div.toolbar-list p#addTextToCanvas {
+    text-align: center;
+}
+div.toolbar-list p#addTextToCanvas span {
+    border: 1px solid black;
+    display: inline-block;
+    height: 30px;
+    line-height: 30px;
+    border-radius: 4px;
+    width: 120px;
+    cursor: pointer;
+    margin-top: 10px;
+    background-color: #ac975e;
 }
