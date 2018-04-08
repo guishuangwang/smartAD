@@ -43,7 +43,7 @@
                             <i class="icon-22 toolbar-delete"></i>
                             <span>删除</span>
                         </a>                        
-                        <a class="header-toolbar-main " title="保存" style="display: block;">
+                        <a class="header-toolbar-main " id="header-toolbar-save" title="保存" style="display: block;">
                             <i class="icon-22 toolbar-download"></i>
                             <span>保存</span>
                         </a>
@@ -94,7 +94,7 @@
             <div id="canvas" class="center-canvas " style="right: 164px;">
                 <div id="theCanvasHolder" width="100%" height="100%" style="display: block;">
                     <div class="canvas-container" style="width: 1090px; height: 811px; position: relative; user-select: none;">
-                        <canvas class="upper-canvas" id="smartAdCanvas" width="1090" height="811" style="position: absolute; width: 1090px; height: 811px; left: 0px; top: 0px; user-select: none; cursor: auto;"></canvas>
+                        <canvas id="smartAdCanvas" width="1090" height="811" style="position: absolute; width: 1090px; height: 811px; left: 0px; top: 0px; user-select: none; cursor: auto;"></canvas>
                     </div>
                 </div>
             </div>
@@ -106,24 +106,6 @@
                         + 导入图片
                     </div>
                     <div class="upload-list">
-                        <!-- <div class="upload-item">
-                            <div class="upload-item-img">
-                                <img src="./images/boy.jpg" width="100%">
-                            </div>
-                            <div class="upload-item-cover"></div>
-                        </div>
-                        <div class="upload-item">
-                            <div class="upload-item-img">
-                                <img src="./images/girl.jpg" width="100%">
-                            </div>
-                            <div class="upload-item-cover"></div>
-                        </div>   
-                        <div class="upload-item">
-                            <div class="upload-item-img">
-                                <img src="./images/girl2.jpg" width="100%">
-                            </div>
-                            <div class="upload-item-cover"></div>
-                        </div>                                              -->
                     </div>
                     <a id="trash-box">
                         <i class="icon-22 icon-trash"></i>
@@ -136,6 +118,7 @@
 
     <script type="text/javascript" src="./js/jquery-3.3.1.min.js"></script>
     <script type="text/javascript" src="./js/fabric.js"></script>
+    <script type="text/javascript" src="./js/canvas2image.js"></script>
     <script type="text/javascript" src="./js/main.js"></script>
 </body>
 

@@ -1,5 +1,6 @@
 $(function() {
     var canvas = new fabric.Canvas('smartAdCanvas');
+    var nativeCanvas = document.getElementById('smartAdCanvas');
     // //add rect.
     // var rect = new fabric.Rect({
     //     top: 100,
@@ -72,31 +73,7 @@ $(function() {
             $('#panel').addClass('show');
         }
     });
-    
-    // function imagesAddEvents() {
-    //     $('div.upload-item').on('mouseover', function(e) {
-    //         $(this).find('.upload-item-cover').show();
-    //     });
-    //     $('div.upload-item').on('mouseleave', function (e) { 
-    //         $(this).find('.upload-item-cover').hide();
-    //     });
-    //     $('div.upload-item-delete').on('click', function(e) {
-    //         $(this).parents('div.upload-item').remove();
-    //         e.stopPropagation();
-    //     });
-    //     $('div.upload-item').on('click', function(e) {
-    //         //点击之后添加到中间canvas画布
-    //         //居中功能 tbd.
-    //         var imgElement = $(this).find('img')[1];
-    //         var imgInstance = new fabric.Image(imgElement, {
-    //             left: 100,
-    //             top: 100,
-    //         });
-    //         imgInstance.scale(0.3);
-    //         canvas.add(imgInstance);
-    //     });
-    // }
-    
+
     //事件委托处理动态添加dom
     $('div.upload-list').on('mouseover', '.upload-item', function(e) {
         //图片鼠标滑过效果    
@@ -164,5 +141,12 @@ $(function() {
     $('a#trash-box').on('click', function(e) {
         e && e.preventDefault();
         $('div.upload-list').empty();
-    })
+    });
+
+    //保存canvas图片 
+    $('a#header-toolbar-save').on('click', function(e) {
+        var fileName = '智能广告_' + (new Date()).getTime();
+        //这里宽高直接取nativeCanvas属性会出现下载失败，感觉是fabric添加的元素宽高有关
+        Canvas2Image.saveAsPNG(nativeCanvas, 1090, 811, fileName);
+    });     
 })
