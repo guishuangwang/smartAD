@@ -210,6 +210,23 @@ $(function() {
                 case 'brightness':
                     activeObj.filters.push(new fabric.Image.filters.Brightness({brightness: 0.05}));               
                     break;
+                case 'threshold':
+                    activeObj.filters.push(new fabric.Image.filters.threshold());            
+                    break;
+                case 'sharpen':
+                    activeObj.filters.push(new fabric.Image.filters.Convolute({
+                        matrix: [ 0, -1,  0,
+                                -1,  5, -1,
+                                0, -1,  0 ]
+                    }));               
+                    break;
+                case 'Emboss':
+                    activeObj.filters.push(new fabric.Image.filters.Convolute({
+                        matrix: [ 1, 1, 1,
+                            1, 0.7, -1,
+                           -1,  -1, -1 ]
+                    }));               
+                    break;                    
                 case 'sepia':
                     activeObj.filters.push(new fabric.Image.filters.Sepia());               
                     break;
