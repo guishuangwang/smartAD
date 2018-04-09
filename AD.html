@@ -7,6 +7,7 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>智能广告</title>
     <link rel="stylesheet" type="text/css" href="./css/colpick.css" />
+    <link rel="stylesheet" type="text/css" href="./css/noty.css" />
     <link rel="stylesheet" type="text/css" href="./css/main.css" />
 </head>
 
@@ -65,6 +66,10 @@
                             <i class="nav-icon icon-text"></i>
                             <nav-title>文字</nav-title>
                         </a>
+                        <a data-target="toolbar-effect" class="sub-nav-note clearfix">
+                                <i class="nav-icon icon-effect"></i>
+                                <nav-title>特效</nav-title>
+                        </a>                        
                         <a data-target="toolbar-segmentation" class="sub-nav-note clearfix">
                             <i class="nav-icon icon-stickers"></i>
                             <nav-title>抠图</nav-title>
@@ -94,6 +99,7 @@
 
                     </div>
                 </div>
+
                 <div class="toolbar toolbar-hide" id="toolbar-text" >
                     <div class="toolbar-cover" style="display: none;"></div>
                     <div class="toolbar-title">文字</div>
@@ -115,6 +121,38 @@
                         </p>
                     </div>
                 </div>
+
+                <div class="toolbar toolbar-hide" id="toolbar-effect">
+                    <div class="toolbar-cover" style="display: none;"></div>
+                    <div class="toolbar-title">图片特效</div>
+                    <div class="toolbar-list" style="top: 60px;">
+                        <div class="image-effect-preview" data-effect="grayscale">
+                            <img src="./images/filters/grayScale.png">
+                            <div class="image-effect-tips">
+                                <span>grayscale</span>
+                            </div>
+                        </div>
+                        <div class="image-effect-preview" data-effect="brightness">
+                            <img src="./images/filters/brightness.png">
+                            <div class="image-effect-tips">
+                                <span>brightness</span>
+                            </div>
+                        </div>
+                        <div class="image-effect-preview" data-effect="sepia">
+                            <img src="./images/filters/sepia.png">
+                            <div class="image-effect-tips">
+                                <span>sepia</span>
+                            </div>
+                        </div> 
+                        <div class="image-effect-preview" data-effect="blur">
+                            <img src="./images/filters/blur.png">
+                            <div class="image-effect-tips">
+                                <span>blur</span>
+                            </div>
+                        </div>                                                                                            
+                    </div>
+                </div>  
+
                 <div class="toolbar toolbar-hide" id="toolbar-segmentation">
                     <div class="toolbar-cover" style="display: none;"></div>
                     <div class="toolbar-title">抠图</div>
@@ -153,6 +191,7 @@
     <script type="text/javascript" src="./js/fabric.js"></script>
     <script type="text/javascript" src="./js/canvas2image.js"></script>
     <script type="text/javascript" src="./js/colpick.js"></script>
+    <script type="text/javascript" src="./js/noty.min.js"></script>
     <script type="text/javascript" src="./js/main.js"></script>
 </body>
 

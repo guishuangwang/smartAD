@@ -152,6 +152,13 @@ $(function() {
         if(canvas && canvas.getActiveObject()) {
             var activeObj = canvas.getActiveObject();
             canvas.remove(activeObj);
+        } else {
+            new Noty({
+                text: '请先选择对象',
+                // layout: 'topCenter',
+                type: 'error',
+                timeout: 1000
+            }).show();
         }
     });
     //删除所有图片
@@ -181,4 +188,47 @@ $(function() {
         });
         canvas.add(text);
     });
+
+    //滤镜图片预览
+    $('div.image-effect-preview').on('mouseover', function(e) {
+        // $(this).find('div.image-effect-tips').css('bottom', '0');
+        $(this).find('div.image-effect-tips').show();
+    });
+    $('div.image-effect-preview').on('mouseout', function(e) {
+        // $(this).find('div.image-effect-tips').css('bottom', '-40px');
+        $(this).find('div.image-effect-tips').hide();
+    });   
+    $('div.image-effect-preview').on('click', function(e) {
+        //为了选中的图片应用filter
+        var activeObj = canvas && canvas.getActiveObject();
+        var effectType = $(this).attr('data-effect');
+        if(activeObj && activeObj instanceof fabric.Image) {
+            switch(effectType) {
+                case 'grayscale':
+                    activeObj.filters.push(new fabric.Image.filters.Grayscale());
+                    break;
+                case 'brightness':
+                    activeObj.filters.push(new fabric.Image.filters.Brightness({brightness: 0.05}));               
+                    break;
+                case 'sepia':
+                    activeObj.filters.push(new fabric.Image.filters.Sepia());               
+                    break;
+                case 'blur':
+                    activeObj.filters.push(new fabric.Image.filters.Blur({blur: 0.5}));               
+                    break;                    
+                default:
+                    break;
+            }
+            activeObj.applyFilters();
+            canvas.remove(activeObj);
+            canvas.add(activeObj);
+        } else {
+            new Noty({
+                text: '请先选择图片',
+                // layout: 'topCenter',
+                type: 'warning',
+                timeout: 1000
+            }).show();
+        }
+    });     
 })
