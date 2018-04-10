@@ -472,3 +472,20 @@ div.image-effect-preview div.image-effect-tips {
     background-color: rgba(0, 0, 0, 0.3);
     display: none;
 }
+
+div.template-item {
+    width: 146px;
+    height: 256px;
+    position: relative;
+    float: left;
+    margin: 8px 4px;
+    cursor: pointer;
+}
+img.template-preview {
+    width: 100%;
+    height: 100%;
+    transition: all 0.3s;
+}
+img.template-preview:hover {
+    transform: scale(1.08);
+}

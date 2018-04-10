@@ -247,5 +247,17 @@ $(function() {
                 timeout: 1000
             }).show();
         }
-    });     
+    }); 
+    
+    //点击模板 渲染模板
+    $('div.template-item').on('click', function(e) {
+        //clear canvas and load from JSON file
+        var jsonFileUrl = $(this).attr('data-json');
+        canvas.clear();
+        
+        $.getJSON(jsonFileUrl, function (data, textStatus, jqXHR) {
+            console.log(data);
+            canvas.loadFromJSON(JSON.stringify(data));
+        });
+    });
 })
