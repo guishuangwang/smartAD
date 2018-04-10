@@ -211,7 +211,7 @@ $(function() {
                     activeObj.filters.push(new fabric.Image.filters.Brightness({brightness: 0.05}));               
                     break;
                 case 'threshold':
-                    activeObj.filters.push(new fabric.Image.filters.threshold());            
+                    activeObj.filters.push(new fabric.Image.filters.Threshold());            
                     break;
                 case 'sharpen':
                     activeObj.filters.push(new fabric.Image.filters.Convolute({
