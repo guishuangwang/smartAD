@@ -213,6 +213,9 @@ $(function() {
                 case 'threshold':
                     activeObj.filters.push(new fabric.Image.filters.Threshold());            
                     break;
+                // case 'sobel':
+                //     activeObj.filters.push(new fabric.Image.filters.Sobel());            
+                // break;                    
                 case 'sharpen':
                     activeObj.filters.push(new fabric.Image.filters.Convolute({
                         matrix: [ 0, -1,  0,
@@ -254,10 +257,11 @@ $(function() {
         //clear canvas and load from JSON file
         var jsonFileUrl = $(this).attr('data-json');
         canvas.clear();
-        
         $.getJSON(jsonFileUrl, function (data, textStatus, jqXHR) {
-            console.log(data);
-            canvas.loadFromJSON(JSON.stringify(data));
+            // console.log(data);
+            // JSON string or object
+            // canvas.loadFromJSON(JSON.stringify(data));
+            canvas.loadFromJSON(data);
         });
     });
 })

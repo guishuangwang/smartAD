@@ -116,3 +116,85 @@
     fabric.Image.filters.Threshold.fromObject = fabric.Image.filters.BaseFilter.fromObject;
   
   })(typeof exports !== 'undefined' ? exports : this);
+
+//   (function(global) {
+
+//     'use strict';
+  
+//     var fabric  = global.fabric || (global.fabric = { }),
+//         filters = fabric.Image.filters,
+//         createClass = fabric.util.createClass;
+  
+//     filters.Sobel = createClass(filters.BaseFilter, /** @lends fabric.Image.filters.Threshold.prototype */ {
+  
+//       type: 'Sobel',
+  
+//       /**
+//        * Fragment source for the myParameter program
+//        */
+//       fragmentSource: 
+//         'precision mediump float;\n' +
+//         '#define KERNEL_SIZE 3\n' +
+//         'uniform sampler2D u_image;\n' +
+//         'uniform vec2 u_textureSize;\n' +
+//         // 'uniform float u_kernel[KERNEL_SIZE];\n' +
+//         'vec3 u_kernel = vec3(1.0,2.0,1.0);\n' +
+//         '#define M_PI 3.1415926535897932384626433832795\n' +
+//         '#define GET_PIXEL(_x, _y) (texture2D(u_image, textCoord + onePixel*vec2(_x, _y)))\n' +
+
+//         'void main() {\n' +
+//             'vec2 onePixel = vec2(1.0, 1.0) / u_textureSize;\n' +
+//             'vec2 textCoord = gl_FragCoord.xy / u_textureSize;\n' +
+//             'float dx = (length(GET_PIXEL(-1, -1)*u_kernel[0] + GET_PIXEL(-1,  0)*u_kernel[1] + GET_PIXEL(-1, +1)*u_kernel[2]) - length(GET_PIXEL(+1, -1)*u_kernel[0] + GET_PIXEL(+1,  0)*u_kernel[1] + GET_PIXEL(+1, +1)*u_kernel[2]));\n' +
+//             'float dy = (length(GET_PIXEL(-1, -1)*u_kernel[0] + GET_PIXEL(0, -1)*u_kernel[1] + GET_PIXEL(+1, -1)*u_kernel[2]) - length(GET_PIXEL(-1, +1)*u_kernel[0] + GET_PIXEL(0, +1)*u_kernel[1] + GET_PIXEL(+1, +1)*u_kernel[2]));\n' +
+//             'float theta = (atan(dy, dx) + M_PI) / (2.0*M_PI);\n' +
+//             'gl_FragColor = vec4(length(vec2(dx, dy)), theta, 0.0, 1.0);\n' +
+//         '}',
+//       myParameter: [1.0, 2.0, 1.0],
+  
+//       mainParameter: 'myParameter',
+  
+//       applyTo2d: function(options) {
+//         // if (this.myParameter === 0) {
+//         //   // early return if the parameter value has a neutral value
+//         //   return;
+//         // }
+//         // var imageData = options.imageData,
+//         //     data = imageData.data, i, len = data.length;
+//         // for (i = 0; i < len; i += 4) {
+//         //   // insert here your code to modify data[i]
+//         //     var r = data[i];
+//         //     var g = data[i+1];
+//         //     var b = data[i+2];
+//         //     var v = (0.2126*r + 0.7152*g + 0.0722*b >= myParameter) ? 255 : 0;
+//         //     data[i] = data[i+1] = data[i+2] = v;          
+//         // }
+//       },
+  
+//       /**
+//        * Return WebGL uniform locations for this filter's shader.
+//        *
+//        * @param {WebGLRenderingContext} gl The GL canvas context used to compile this filter's shader.
+//        * @param {WebGLShaderProgram} program This filter's compiled shader program.
+//        */
+//       getUniformLocations: function(gl, program) {
+//         return {
+//             u_kernel: gl.getUniformLocation(program, 'u_kernel[0]'),
+//         };
+//       },
+  
+//       /**
+//        * Send data from this filter to its shader program's uniforms.
+//        *
+//        * @param {WebGLRenderingContext} gl The GL canvas context used to compile this filter's shader.
+//        * @param {Object} uniformLocations A map of string uniform names to WebGLUniformLocation objects
+//        */
+//       sendUniformData: function(gl, uniformLocations) {
+//         gl.uniform1f(uniformLocations.u_kernel, this.myParameter);
+//       },
+//     });
+  
+//     fabric.Image.filters.Sobel.fromObject = fabric.Image.filters.BaseFilter.fromObject;
+  
+//   })(typeof exports !== 'undefined' ? exports : this);
+
