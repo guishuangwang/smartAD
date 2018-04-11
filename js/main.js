@@ -1,8 +1,9 @@
 $(function() {
     var canvas = new fabric.Canvas('smartAdCanvas');
+    // canvas.backgroundColor = 'rgb(220,220,220)';
     var nativeCanvas = document.getElementById('smartAdCanvas');
     //初始化颜色选择器
-    $('#picker').colpick({
+    $('.colorPicker').colpick({
         layout: 'hex',
         submit: 0,
         colorScheme: 'dark',
@@ -55,7 +56,7 @@ $(function() {
     //     cornerSize: 12,
     //     transparentCorners: true
     // });
-    // canvas.backgroundColor = 'rgb(220,220,220)';
+
     // //interaction.
     // canvas.on('mouse:down', function(options) {
     //     console.log(options.e.clientX, options.e.clientY);
@@ -179,12 +180,25 @@ $(function() {
         //add text.
         var txt = $('input#typeText').val();
         var fontSize = $('input#fontSize').val();
-        var color = '#' + $('input#picker').val();
+        var fontColor = '#' + $('input#pickerFont').val();
+        var bgColor = '#' + $('input#pickerBG').val();
         var text = new fabric.IText(txt, {
             left: 200,
             top: 50,
+            fontFamily: 'Comic Sans',
             fontSize: fontSize,
-            stroke: color
+            fill: fontColor,
+            textBackgroundColor: bgColor
+            // stroke: color,
+            // strokeWidth: 1
+            // textAlign: 'right'
+            // fontStyle: 'italic',
+            // shadow: 'rgba(0,0,0,0.3) 5px 5px 5px'
+            // underline; true
+            // linethrough: true
+            // overline: true
+            // fontWeight: 'bold'
+            // fontWeight: 'normal'
         });
         canvas.add(text);
     });
