@@ -196,7 +196,12 @@
                     <div class="toolbar-cover" style="display: none;"></div>
                     <div class="toolbar-title">抠图</div>
                     <div class="toolbar-list" style="top: 60px;">
-
+                        <div class="segmentationInteraction" data-func="region">框选</div>
+                        <div class="segmentationInteraction" data-func="foregroundBrush">前景画笔</div>
+                        <div class="segmentationInteraction" data-func="backgroundBrush">背景画笔</div>
+                        <div class="segmentationInteraction" id="segmentationReset" data-func="resetSeg">重置</div>
+                        <a class="segmentationBtns floatLeft" id="smartSegmentation" href="javascript:void(0)">智能抠图</a>
+                        <a class="segmentationBtns floatRight" id="exportSegToAD" href="javascript:void(0)">输出到广告</a>
                     </div>
                 </div>                                
             </div>
@@ -207,6 +212,11 @@
                         <canvas id="smartAdCanvas" width="1090" height="811" style="position: absolute; width: 1090px; height: 811px; left: 0px; top: 0px; user-select: none; cursor: auto;"></canvas>
                     </div>
                 </div>
+            </div>
+
+            <div id="segmentationImage" class="center-canvas " style="right: 164px; display: none;">
+                <canvas id="segmentationImagePreview"></canvas>
+                <canvas id="segmentationResult"></canvas>
             </div>
 
             <div id="panel" class="upload-panel show" style="display: block;">

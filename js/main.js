@@ -2,6 +2,14 @@ $(function() {
     var canvas = new fabric.Canvas('smartAdCanvas');
     // canvas.backgroundColor = 'rgb(220,220,220)';
     var nativeCanvas = document.getElementById('smartAdCanvas');
+    var segImage = document.getElementById('segmentationImagePreview');
+    var segImageCtx = segImage.getContext('2d');
+    var segResult = document.getElementById('segmentationResult');
+    var segResultCtx = segResult.getContext('2d');
+    var imgElement; //当前点击的图片对象
+    var scale; //抠图图片的缩放尺度
+    var segStatus = ''; //抠图的功能
+
     //初始化颜色选择器
     $('.colorPicker').colpick({
         layout: 'hex',
@@ -82,7 +90,19 @@ $(function() {
         var toolBarId = $(this).attr('data-target');
         $('div#toolbar').children('.toolbar').hide();
         $('div#toolbar').find('div#' + toolBarId).show();
+        if(toolBarId === 'toolbar-segmentation') {
+            $('div#segmentationImage').show();
+            $('div#canvas').hide();
+        } else{
+            $('div#segmentationImage').hide();
+            $('div#canvas').show();         
+        }
     });
+    //判断当前是否选中了抠图
+    function isSelectSegmentation() {
+        return $('#nav-wrapper a.active').attr('data-target') === 'toolbar-segmentation' ? true : false;
+    }
+
     //右侧panel 展开控制
     $('#panel-show-hide-btn').on('click', function(e) {
         if($('#panel').hasClass('show')){
@@ -107,15 +127,28 @@ $(function() {
         e.stopPropagation();
     });     
     $('div.upload-list').on('click', '.upload-item', function(e) {
-        //点击之后添加到中间canvas画布
-        //居中功能 tbd.
-        var imgElement = $(this).find('img')[1];
-        var imgInstance = new fabric.Image(imgElement, {
-            left: 100,
-            top: 100,
-        });
-        imgInstance.scale(0.3);
-        canvas.add(imgInstance);        
+        imgElement = $(this).find('img')[1];
+        var imgWidth = imgElement.width;
+        var imgHeight = imgElement.height;
+        var maxSize = 400;
+        scale = imgWidth > imgHeight ? maxSize/imgWidth : maxSize/imgHeight;
+        //判断是否选中了抠图
+        if(isSelectSegmentation()) {
+            //canvas预览图片，进行抠图操作
+            segImage.width = imgWidth * scale;
+            segImage.height = imgHeight * scale;
+            segImageCtx.drawImage(imgElement, 0, 0, segImage.width, segImage.height);
+            
+        } else {
+            //点击之后添加到中间canvas画布
+            //居中功能 tbd.
+            var imgInstance = new fabric.Image(imgElement, {
+                left: 100,
+                top: 100,
+            });
+            imgInstance.scale(0.3);
+            canvas.add(imgInstance); 
+        }
     });
 
     //打开图片文件
@@ -278,4 +311,77 @@ $(function() {
             canvas.loadFromJSON(data);
         });
     });
+
+    //清空抠图的画布
+    $('div#segmentationReset').on('click', function(e) {
+        segImageCtx.clearRect(0, 0, segImage.width, segImage.height);
+        segResultCtx.clearRect(0, 0, segResult.width, segResult.height);
+    });
+
+    //抠图功能按钮点击
+    $('div.segmentationInteraction').on('click', function(e) {
+        $(this).addClass('activeFunc');
+        $(this).siblings('.segmentationInteraction').removeClass('activeFunc');
+        segStatus = $(this).attr('data-func');
+    });
+
+    //抠图的框选功能
+    var flag = false;
+    var startX = 0;
+    var startY = 0;
+    var endX = 0;
+    var endY = 0;
+    segImage.addEventListener('mousedown', function(e) {
+        // console.log('startX:', e.offsetX);
+        // console.log('startY:', e.offsetY);
+        switch(segStatus) {
+            case 'region':
+                flag = true;
+                startX = e.offsetX;
+                startY = e.offsetY;
+                break;
+            default:
+                break;
+        }
+
+    });
+    segImage.addEventListener('mousemove', function(e) {
+        // console.log('e.offsetX:', e.offsetX);
+        // console.log('e.offsetY:', e.offsetY); 
+        switch(segStatus) {
+            case 'region':
+                if(flag) {
+                    segImageCtx.clearRect(0, 0, segImage.width, segImage.height);
+                    segImageCtx.drawImage(imgElement, 0, 0, segImage.width, segImage.height);
+                    segImageCtx.strokeRect(startX, startY, e.offsetX - startX, e.offsetY - startY);
+        
+                }
+                break;
+            default:
+                break;
+        }
+
+    });
+    segImage.addEventListener('mouseup', function(e) {
+        // console.log('endX:', endX);
+        // console.log('endY:', endY);
+        switch(segStatus) {
+            case 'region':
+                flag = false;
+                endX = e.offsetX;
+                endY = e.offsetY;
+                break;
+            default:
+                break;
+        }
+    });
+
+    //智能抠图
+    $('a#smartSegmentation').on('click', function(e) {
+        console.log('startX:', startX);
+        console.log('startY:', startY);
+        console.log('endX:', endX);
+        console.log('endY:', endY);
+    });
+
 })

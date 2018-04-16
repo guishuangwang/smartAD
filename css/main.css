@@ -271,7 +271,7 @@ body {
     margin: 20px 18px 20px 4px;
     font-family: "noto_sansregular", "Microsoft YaHei", sans-serif;
     text-align: center;
-    font-size: 14px;
+    font-size: 20px;
     text-shadow: 1px 0 0 #000;
     color: #000;
     line-height: 20px;
@@ -291,7 +291,7 @@ body {
     overflow: scroll;
 }
 
-#canvas {
+#canvas, #segmentationImage {
     position: absolute;
     top: 0;
     bottom: 0;
@@ -488,4 +488,57 @@ img.template-preview {
 }
 img.template-preview:hover {
     transform: scale(1.08);
+}
+
+div.segmentationInteraction {
+    height: 30px;
+    line-height: 30px;
+    font-size: 16px;
+    text-align: center;
+    cursor: pointer;
+    margin: 10px 0;
+    border: 1px solid #ccc;
+    background-color: #293233;
+    color: white;
+}
+div.activeFunc {
+    background-color: #a2a5a5;
+    color: black;
+    cursor: not-allowed;
+}
+
+a.segmentationBtns {
+    width: 80px;
+    height: 36px;
+    line-height: 36px;
+    /* padding: 0 10px; */
+    font-size: 14px;
+    font-family: "Microsoft YaHei", "noto_sansregular", sans-serif;
+    text-align: center;
+    color: #ebebeb;
+    border-radius: 3px;
+    background-color: #ac975e;
+    text-decoration: none;
+    margin: 0 30px;
+}
+.floatLeft {
+    float: left;
+}
+.floatRight {
+    float: right;
+}
+
+canvas#segmentationImagePreview {
+    position: absolute;
+    /* width: 400px;
+    height: 400px; */
+    left: 50px;
+    top: 120px;
+}
+canvas#segmentationResult {
+    position: absolute;
+    /* width: 400px;
+    height: 400px; */
+    left: 500px;
+    top: 120px;
 }
