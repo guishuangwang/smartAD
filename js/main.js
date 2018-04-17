@@ -9,6 +9,7 @@ $(function() {
     var imgElement; //当前点击的图片对象
     var scale; //抠图图片的缩放尺度
     var segStatus = ''; //抠图的功能
+    var segImgUrl = ''; //抠图的原图地址
 
     //初始化颜色选择器
     $('.colorPicker').colpick({
@@ -161,7 +162,8 @@ $(function() {
     });
     //input file 选择了图片
     $('#editorFileInput').on('change', function(e) {
-        var imgFile = this.files[0];
+        var that = this;
+        var imgFile = that.files[0];
         var fileReader = new FileReader();
         fileReader.readAsDataURL(imgFile);
         fileReader.onload = function(e) {
@@ -179,6 +181,22 @@ $(function() {
             $('div.upload-list').append(previewHtml);
             // imagesAddEvents();
         }
+
+        //上传文件到服务器获取地址
+        // var formData = new FormData();
+        // formData.append('image', imgFile);
+        // $.ajax({
+        //     type: "post",
+        //     url: "/api/uploadImageForSeg",
+        //     data: formData,
+        //     // dataType: "dataType",
+        //     contentType: false,
+        //     processData: false,
+        //     success: function (response) {
+        //         console.log(response.add_image_name);
+        //     }
+        // });
+        
     });
     //删除选中对象
     $('a#header-toolbar-delete').on('click', function(e) {
@@ -382,6 +400,48 @@ $(function() {
         console.log('startY:', startY);
         console.log('endX:', endX);
         console.log('endY:', endY);
+        var data = {
+            origin_url: 'images/user/41b0f59e-4442-4e4d-816d-4b63e9df3030.jpg', //暂时写死，需要替换成上传图片返回的URL
+            pkl_name: '',
+            algo_status: 'init',
+            // pos_rect: JSON.stringify([148,58,307,236,0.4166666666666667]),
+            pos_rect: JSON.stringify([startX, startY, endX, endY, scale]),
+            pos_p_brush: JSON.stringify([]),
+            pos_m_brush: JSON.stringify([]),
+        };
+        $.ajax({
+            type: "post",
+            url: "/api/sendInteraction",
+            data: data,
+            // dataType: "dataType",
+            success: function (response) {
+                console.log(response);
+                var resObj = JSON.parse(response);
+                //写死图片服务地址
+                var maskUrl = 'http://localhost:4010/' + resObj.mask_url;
+                var img = new Image();
+                // img.src = maskUrl;
+                img.src = '../images/segmentation/mask.png';
+                img.onload = function() {
+                    var imgWidth = img.width;
+                    var imgHeight = img.height;
+                    var maxSize = 400;
+                    scale = imgWidth > imgHeight ? maxSize/imgWidth : maxSize/imgHeight;
+                    //canvas预览图片，进行抠图操作
+                    segResult.width = imgWidth * scale;
+                    segResult.height = imgHeight * scale;
+                    segResultCtx.drawImage(img, 0, 0, segResult.width, segResult.height);
+
+                    //对原图和mask进行处理，产生抠图的效果
+                    var imgData1 = segImageCtx.getImageData(0, 0, segImage.width, segImage.height);
+                    var imgData2 = segResultCtx.getImageData(0, 0, segResult.width, segResult.height); // canvas 跨域问题。。。
+                    for(var i = 0; i < imgData2.data.length; i += 4) {
+                        imgData1.data[i + 3] = imgData2.data[i];
+                    }
+                    segResultCtx.putImageData(imgData1, 0, 0);
+                }
+            }
+        });
     });
 
 })
