@@ -108,7 +108,7 @@ body {
     margin: 0 auto;
     width: 22px;
     height: 22px;
-    background: url(../images/web_icon.png) no-repeat;
+    background: url(../img/web_icon.png) no-repeat;
 }
 
 #header #header-toolbar #header-toolbar-wrapper .header-toolbar-main .toolbar-open {
@@ -204,7 +204,7 @@ body {
     margin: 0 auto;
     width: 24px;
     height: 24px;
-    background: url(../images/web_icon_2.png) top left no-repeat;
+    background: url(../img/web_icon_2.png) top left no-repeat;
 }
 
 .nav-icon.icon-template {
@@ -338,7 +338,7 @@ body {
     left: -15px;
     top: 50%;
     margin-top: -44px;
-    background: url(../images/upload-panel-expand-collapse-btn.png) no-repeat;
+    background: url(../img/upload-panel-expand-collapse-btn.png) no-repeat;
     cursor: pointer;
 }
 #panel-show-hide-btn {
@@ -401,10 +401,10 @@ body {
     height: 10px;
     top: 6px;
     right: 6px;
-    background: url(../images/delete_icon.png) 0 0 no-repeat;
+    background: url(../img/delete_icon.png) 0 0 no-repeat;
 }
 .upload-item-delete:hover {
-    background: url(../images/delete_icon.png) 0 0 no-repeat;
+    background: url(../img/delete_icon.png) 0 0 no-repeat;
 }
 #trash-box {
     position: absolute;

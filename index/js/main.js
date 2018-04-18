@@ -135,6 +135,7 @@ $(function() {
         scale = imgWidth > imgHeight ? maxSize/imgWidth : maxSize/imgHeight;
         //判断是否选中了抠图
         if(isSelectSegmentation()) {
+            segImgUrl = $(imgElement).attr('data-url') || '';
             //canvas预览图片，进行抠图操作
             segImage.width = imgWidth * scale;
             segImage.height = imgHeight * scale;
@@ -164,38 +165,48 @@ $(function() {
     $('#editorFileInput').on('change', function(e) {
         var that = this;
         var imgFile = that.files[0];
-        var fileReader = new FileReader();
-        fileReader.readAsDataURL(imgFile);
-        fileReader.onload = function(e) {
-            var imgSrc = e.target.result;
-            //右侧预览区域显示
-            var previewHtml = [
-                '<div class="upload-item">',
-                    '<div class="upload-item-img">',
-                        '<img src="' + imgSrc + '" width="100%">',
-                        '<img src="' + imgSrc + '" style="display:none">',
-                    '</div>',
-                    '<div class="upload-item-cover"><div class="upload-item-delete"></div></div>',
-                '</div>'
-            ].join('');                  
-            $('div.upload-list').append(previewHtml);
-            // imagesAddEvents();
-        }
+        // var fileReader = new FileReader();
+        // fileReader.readAsDataURL(imgFile);
+        // fileReader.onload = function(e) {
+        //     var imgSrc = e.target.result;
+        //     //右侧预览区域显示
+        //     var previewHtml = [
+        //         '<div class="upload-item">',
+        //             '<div class="upload-item-img">',
+        //                 '<img src="' + imgSrc + '" width="100%" data-url="'+ segImgUrl + '">',
+        //                 '<img src="' + imgSrc + '" style="display:none" data-url="'+ segImgUrl + '">',
+        //             '</div>',
+        //             '<div class="upload-item-cover"><div class="upload-item-delete"></div></div>',
+        //         '</div>'
+        //     ].join('');                  
+        //     $('div.upload-list').append(previewHtml);
+        // }
 
-        //上传文件到服务器获取地址
-        // var formData = new FormData();
-        // formData.append('image', imgFile);
-        // $.ajax({
-        //     type: "post",
-        //     url: "/api/uploadImageForSeg",
-        //     data: formData,
-        //     // dataType: "dataType",
-        //     contentType: false,
-        //     processData: false,
-        //     success: function (response) {
-        //         console.log(response.add_image_name);
-        //     }
-        // });
+        //上传文件到服务器获取图片地址
+        var formData = new FormData();
+        formData.append('image', imgFile);
+        $.ajax({
+            type: "post",
+            url: "/api/uploadImageForSeg",
+            data: formData,
+            // dataType: "dataType",
+            contentType: false,
+            processData: false,
+            success: function (response) {
+                console.log(response);
+                var imgURL = JSON.parse(response).add_image_name || '';
+                var previewHtml = [
+                    '<div class="upload-item">',
+                        '<div class="upload-item-img">',
+                            '<img src="' + imgURL + '" width="100%" data-url="'+ imgURL + '">',
+                            '<img src="' + imgURL + '" style="display:none" data-url="'+ imgURL + '">',
+                        '</div>',
+                        '<div class="upload-item-cover"><div class="upload-item-delete"></div></div>',
+                    '</div>'
+                ].join('');                  
+                $('div.upload-list').append(previewHtml);
+            }
+        });
         
     });
     //删除选中对象
@@ -401,7 +412,7 @@ $(function() {
         console.log('endX:', endX);
         console.log('endY:', endY);
         var data = {
-            origin_url: 'images/user/41b0f59e-4442-4e4d-816d-4b63e9df3030.jpg', //暂时写死，需要替换成上传图片返回的URL
+            origin_url: segImgUrl, //暂时写死，需要替换成上传图片返回的URL
             pkl_name: '',
             algo_status: 'init',
             // pos_rect: JSON.stringify([148,58,307,236,0.4166666666666667]),
@@ -418,10 +429,9 @@ $(function() {
                 console.log(response);
                 var resObj = JSON.parse(response);
                 //写死图片服务地址
-                var maskUrl = 'http://localhost:4010/' + resObj.mask_url;
+                var maskUrl = resObj.mask_url;
                 var img = new Image();
-                // img.src = maskUrl;
-                img.src = '../images/segmentation/mask.png';
+                img.src = maskUrl;
                 img.onload = function() {
                     var imgWidth = img.width;
                     var imgHeight = img.height;
