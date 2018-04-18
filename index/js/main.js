@@ -411,6 +411,12 @@ $(function() {
         console.log('startY:', startY);
         console.log('endX:', endX);
         console.log('endY:', endY);
+        var segTips = new Noty({
+            text: '智能计算中，请稍等。。。',
+            layout: 'topCenter',
+            type: 'information',
+            // timeout: 1000
+        }).show();
         var data = {
             origin_url: segImgUrl, //暂时写死，需要替换成上传图片返回的URL
             pkl_name: '',
@@ -449,6 +455,7 @@ $(function() {
                         imgData1.data[i + 3] = imgData2.data[i];
                     }
                     segResultCtx.putImageData(imgData1, 0, 0);
+                    segTips.close();
                 }
             }
         });
