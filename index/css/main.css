@@ -534,6 +534,7 @@ canvas#segmentationImagePreview {
     height: 400px; */
     left: 50px;
     top: 120px;
+    border: 1px solid #d3d3d3;
 }
 canvas#segmentationResult {
     position: absolute;
@@ -541,4 +542,5 @@ canvas#segmentationResult {
     height: 400px; */
     left: 500px;
     top: 120px;
+    border: 1px solid #d3d3d3;
 }

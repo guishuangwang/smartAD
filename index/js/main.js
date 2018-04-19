@@ -461,4 +461,23 @@ $(function() {
         });
     });
 
+    //输出到广告
+    $('a#exportSegToAD').on('click', function(e) {
+        //新建一个隐藏的抠图区域canvas
+        var hiddenCanvas = document.createElement('canvas');
+        var hiddenCanvasCtx = hiddenCanvas.getContext('2d');
+        hiddenCanvas.width = endX - startX;
+        hiddenCanvas.height = endY - startY;
+        var resultImgData = segResultCtx.getImageData(startX, startY, hiddenCanvas.width, hiddenCanvas.height);
+        hiddenCanvasCtx.putImageData(resultImgData, 0, 0);
+        var image = new Image();
+        image.src = hiddenCanvas.toDataURL('image/png');
+        image.onload = function() {
+            var imgInstance = new fabric.Image(image, {
+                left: 100,
+                top: 100,
+            });
+            canvas.add(imgInstance); 
+        }
+    });
 })
