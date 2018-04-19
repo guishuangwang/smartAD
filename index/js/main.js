@@ -10,6 +10,8 @@ $(function() {
     var scale; //抠图图片的缩放尺度
     var segStatus = ''; //抠图的功能
     var segImgUrl = ''; //抠图的原图地址
+    var segRectOut; //抠图接口返回的框，用来裁剪canvas区域
+    var imgData1; //保存交互操作前的原图data
 
     //初始化颜色选择器
     $('.colorPicker').colpick({
@@ -140,6 +142,7 @@ $(function() {
             segImage.width = imgWidth * scale;
             segImage.height = imgHeight * scale;
             segImageCtx.drawImage(imgElement, 0, 0, segImage.width, segImage.height);
+            imgData1 = segImageCtx.getImageData(0, 0, segImage.width, segImage.height);
             
         } else {
             //点击之后添加到中间canvas画布
@@ -354,12 +357,14 @@ $(function() {
         segStatus = $(this).attr('data-func');
     });
 
-    //抠图的框选功能
+    //抠图的框选功能 & 画笔功能
     var flag = false;
     var startX = 0;
     var startY = 0;
     var endX = 0;
     var endY = 0;
+    var foregroundBrushArray = []; //抠图前景数组
+    var backgroundBrushArray = []; //抠图背景数组
     segImage.addEventListener('mousedown', function(e) {
         // console.log('startX:', e.offsetX);
         // console.log('startY:', e.offsetY);
@@ -369,6 +374,16 @@ $(function() {
                 startX = e.offsetX;
                 startY = e.offsetY;
                 break;
+            case 'foregroundBrush':
+                flag = true;
+                foregroundBrushArray = [];
+                foregroundBrushArray.push(-4, scale, e.offsetX, e.offsetY);
+                break;
+            case 'backgroundBrush':
+                flag = true;
+                backgroundBrushArray = [];
+                backgroundBrushArray.push(-4, scale, e.offsetX, e.offsetY);
+                break;                
             default:
                 break;
         }
@@ -386,6 +401,18 @@ $(function() {
         
                 }
                 break;
+            case 'foregroundBrush':
+                if(flag) {
+                    foregroundBrushArray.push(e.offsetX, e.offsetY);
+                    brushPaint(foregroundBrushArray, 'blue');
+                }
+                break;
+            case 'backgroundBrush':
+                if(flag) {
+                    backgroundBrushArray.push(e.offsetX, e.offsetY);
+                    brushPaint(backgroundBrushArray, 'red');
+                }
+                break;
             default:
                 break;
         }
@@ -400,10 +427,30 @@ $(function() {
                 endX = e.offsetX;
                 endY = e.offsetY;
                 break;
+            case 'foregroundBrush':
+            case 'backgroundBrush':
+                flag = false;
+                break;
             default:
                 break;
         }
     });
+
+    //画笔功能
+    function brushPaint(arr, brushColor) {
+        segImageCtx.strokeStyle = brushColor;
+        segImageCtx.lineWidth = 4;
+        var pointArr = arr.slice(2);
+        if(pointArr.length >= 4) {
+            segImageCtx.beginPath();
+            for(var i = 0; i < pointArr.length - 2; i += 2) {
+                segImageCtx.moveTo(pointArr[i], pointArr[i+1]);
+                segImageCtx.lineTo(pointArr[i+2], pointArr[i+3]);
+            }
+            segImageCtx.closePath();
+            segImageCtx.stroke();
+        }
+    }
 
     //智能抠图
     $('a#smartSegmentation').on('click', function(e) {
@@ -418,13 +465,12 @@ $(function() {
             // timeout: 1000
         }).show();
         var data = {
-            origin_url: segImgUrl, //暂时写死，需要替换成上传图片返回的URL
+            origin_url: segImgUrl, //上传图片返回的URL
             pkl_name: '',
             algo_status: 'init',
-            // pos_rect: JSON.stringify([148,58,307,236,0.4166666666666667]),
-            pos_rect: JSON.stringify([startX, startY, endX, endY, scale]),
-            pos_p_brush: JSON.stringify([]),
-            pos_m_brush: JSON.stringify([]),
+            pos_rect: segStatus === 'region' ? JSON.stringify([startX, startY, endX, endY, scale]) : JSON.stringify([]),
+            pos_p_brush: segStatus === 'region' ? JSON.stringify([]) : JSON.stringify(foregroundBrushArray), //前景 
+            pos_m_brush: segStatus === 'region' ? JSON.stringify([]) : JSON.stringify(backgroundBrushArray), //背景
         };
         $.ajax({
             type: "post",
@@ -436,6 +482,7 @@ $(function() {
                 var resObj = JSON.parse(response);
                 //写死图片服务地址
                 var maskUrl = resObj.mask_url;
+                segRectOut = resObj.rect_out;
                 var img = new Image();
                 img.src = maskUrl;
                 img.onload = function() {
@@ -449,7 +496,8 @@ $(function() {
                     segResultCtx.drawImage(img, 0, 0, segResult.width, segResult.height);
 
                     //对原图和mask进行处理，产生抠图的效果
-                    var imgData1 = segImageCtx.getImageData(0, 0, segImage.width, segImage.height);
+                    //注意：原图进行框选或者画笔交互之后，ImageData会变，所以这里的imgData1 应该提前获取
+                    // var imgData1 = segImageCtx.getImageData(0, 0, segImage.width, segImage.height);
                     var imgData2 = segResultCtx.getImageData(0, 0, segResult.width, segResult.height); // canvas 跨域问题。。。
                     for(var i = 0; i < imgData2.data.length; i += 4) {
                         imgData1.data[i + 3] = imgData2.data[i];
@@ -466,9 +514,13 @@ $(function() {
         //新建一个隐藏的抠图区域canvas
         var hiddenCanvas = document.createElement('canvas');
         var hiddenCanvasCtx = hiddenCanvas.getContext('2d');
-        hiddenCanvas.width = endX - startX;
-        hiddenCanvas.height = endY - startY;
-        var resultImgData = segResultCtx.getImageData(startX, startY, hiddenCanvas.width, hiddenCanvas.height);
+        // hiddenCanvas.width = endX - startX;
+        // hiddenCanvas.height = endY - startY;
+        // var resultImgData = segResultCtx.getImageData(startX, startY, hiddenCanvas.width, hiddenCanvas.height);
+        //根据接口返回的rect来进行裁剪canvas区域
+        hiddenCanvas.width = segRectOut[2] * scale;
+        hiddenCanvas.height = segRectOut[3] * scale;
+        var resultImgData = segResultCtx.getImageData(segRectOut[0] * scale, segRectOut[1] * scale, hiddenCanvas.width, hiddenCanvas.height);
         hiddenCanvasCtx.putImageData(resultImgData, 0, 0);
         var image = new Image();
         image.src = hiddenCanvas.toDataURL('image/png');
