@@ -551,3 +551,11 @@ canvas#segmentationResult {
     top: 120px;
     border: 1px solid #d3d3d3;
 }
+
+img#segArrow {
+    position: absolute;
+    width: 24px;
+    height: 20px;
+    top: 280px;
+    left: 465px;
+}
