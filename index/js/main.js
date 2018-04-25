@@ -143,7 +143,12 @@ $(function() {
             segImage.height = imgHeight * scale;
             segImageCtx.drawImage(imgElement, 0, 0, segImage.width, segImage.height);
             imgData1 = segImageCtx.getImageData(0, 0, segImage.width, segImage.height);
-            
+            segPush();
+            //动态调整结果canvas的宽高，箭头的位置，预览canvas的位置
+            segResult.width = segImage.width;
+            segResult.height = segImage.height;
+            $('img#segArrow').css('top', 120 + segImage.height/2);
+            $('canvas#segmentationImagePreview').css('left', 450 - segImage.width);
         } else {
             //点击之后添加到中间canvas画布
             //居中功能 tbd.
@@ -426,10 +431,12 @@ $(function() {
                 flag = false;
                 endX = e.offsetX;
                 endY = e.offsetY;
+                segPush();
                 break;
             case 'foregroundBrush':
             case 'backgroundBrush':
                 flag = false;
+                segPush();
                 break;
             default:
                 break;
@@ -531,5 +538,51 @@ $(function() {
             });
             canvas.add(imgInstance); 
         }
+    });
+
+    //undo & redo
+    var segPushArray = new Array(); // 保存canvas快照
+    var segStep = -1;
+    function segPush() {
+        segStep++;
+        if(segPushArray.length > segStep) {
+            segPushArray.length = segStep;
+        }
+        segPushArray.push(segImage.toDataURL());
+
+    }
+    function segUndo() {
+        if(segStep > 0) {
+            segStep--;
+            var tmpImg = new Image();
+            tmpImg.src = segPushArray[segStep];
+            tmpImg.onload = function() {
+                segImageCtx.drawImage(tmpImg, 0, 0);
+            }
+        }
+    }
+    function segRedo() {
+        if(segStep < segPushArray.length - 1) {
+            segStep++;
+            var tmpImg = new Image();
+            tmpImg.src = segPushArray[segStep];
+            tmpImg.onload = function() {
+                segImageCtx.drawImage(tmpImg, 0, 0);
+            }
+        }
+    }
+    $('a#header-toolbar-undo').on('click', function(e) {
+        if(isSelectSegmentation()) {
+            segUndo();
+        }else {
+
+        }
+    });
+    $('a#header-toolbar-redo').on('click', function(e) {
+        if(isSelectSegmentation()) {
+            segRedo();
+        }else {
+            
+        }        
     });
 })
