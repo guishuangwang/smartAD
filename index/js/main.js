@@ -158,6 +158,7 @@ $(function() {
             });
             imgInstance.scale(0.3);
             canvas.add(imgInstance); 
+            adPush();
         }
     });
 
@@ -541,7 +542,8 @@ $(function() {
     });
 
     //undo & redo
-    var segPushArray = new Array(); // 保存canvas快照
+    //抠图部分
+    var segPushArray = new Array(); // 保存抠图canvas快照
     var segStep = -1;
     function segPush() {
         segStep++;
@@ -571,18 +573,48 @@ $(function() {
             }
         }
     }
+    //广告部分
+    var adPushArray = new Array(); //保存广告canvas快照
+    var adStep = -1;
+    function adPush() {
+        adStep++;
+        if(adPushArray.length > adStep) {
+            adPushArray.length = adStep;
+        }
+        adPushArray.push(nativeCanvas.toDataURL());
+    }
+    function adUndo() {
+        if(adStep > 0) {
+            adStep--;
+            var tmpImg = new Image();
+            tmpImg.src = adPushArray[adStep];
+            tmpImg.onload = function() {
+                nativeCanvas.getContext('2d').drawImage(tmpImg, 0, 0);
+            }
+        }
+    }
+    function adRedo() {
+        if(adStep < adPushArray.length - 1) {
+            adStep++;
+            var tmpImg = new Image();
+            tmpImg.src = adPushArray[adStep];
+            tmpImg.onload = function() {
+                nativeCanvas.getContext('2d').drawImage(tmpImg, 0, 0);
+            }
+        }
+    }
     $('a#header-toolbar-undo').on('click', function(e) {
         if(isSelectSegmentation()) {
             segUndo();
         }else {
-
+            adUndo();
         }
     });
     $('a#header-toolbar-redo').on('click', function(e) {
         if(isSelectSegmentation()) {
             segRedo();
         }else {
-            
+            adRedo();
         }        
     });
 })
