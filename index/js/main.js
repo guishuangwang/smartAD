@@ -96,9 +96,13 @@ $(function() {
         if(toolBarId === 'toolbar-segmentation') {
             $('div#segmentationImage').show();
             $('div#canvas').hide();
+            $('a#header-toolbar-undo').show();
+            $('a#header-toolbar-redo').show();
         } else{
             $('div#segmentationImage').hide();
-            $('div#canvas').show();         
+            $('div#canvas').show();    
+            $('a#header-toolbar-undo').hide();
+            $('a#header-toolbar-redo').hide();     
         }
     });
     //判断当前是否选中了抠图
@@ -158,7 +162,7 @@ $(function() {
             });
             imgInstance.scale(0.3);
             canvas.add(imgInstance); 
-            adPush();
+            // adPush();
         }
     });
 
@@ -272,6 +276,7 @@ $(function() {
             // fontWeight: 'normal'
         });
         canvas.add(text);
+        // adPush();
     });
 
     //滤镜图片预览
@@ -327,6 +332,7 @@ $(function() {
             activeObj.applyFilters();
             canvas.remove(activeObj);
             canvas.add(activeObj);
+            // adPush();
         } else {
             new Noty({
                 text: '请先选择图片',
@@ -573,36 +579,36 @@ $(function() {
             }
         }
     }
-    //广告部分
-    var adPushArray = new Array(); //保存广告canvas快照
-    var adStep = -1;
-    function adPush() {
-        adStep++;
-        if(adPushArray.length > adStep) {
-            adPushArray.length = adStep;
-        }
-        adPushArray.push(nativeCanvas.toDataURL());
-    }
-    function adUndo() {
-        if(adStep > 0) {
-            adStep--;
-            var tmpImg = new Image();
-            tmpImg.src = adPushArray[adStep];
-            tmpImg.onload = function() {
-                nativeCanvas.getContext('2d').drawImage(tmpImg, 0, 0);
-            }
-        }
-    }
-    function adRedo() {
-        if(adStep < adPushArray.length - 1) {
-            adStep++;
-            var tmpImg = new Image();
-            tmpImg.src = adPushArray[adStep];
-            tmpImg.onload = function() {
-                nativeCanvas.getContext('2d').drawImage(tmpImg, 0, 0);
-            }
-        }
-    }
+    //广告部分 - 这种方式存在问题
+    // var adPushArray = new Array(); //保存广告canvas快照
+    // var adStep = -1;
+    // function adPush() {
+    //     adStep++;
+    //     if(adPushArray.length > adStep) {
+    //         adPushArray.length = adStep;
+    //     }
+    //     adPushArray.push(nativeCanvas.toDataURL());
+    // }
+    // function adUndo() {
+    //     if(adStep > 0) {
+    //         adStep--;
+    //         var tmpImg = new Image();
+    //         tmpImg.src = adPushArray[adStep];
+    //         tmpImg.onload = function() {
+    //             nativeCanvas.getContext('2d').drawImage(tmpImg, 0, 0);
+    //         }
+    //     }
+    // }
+    // function adRedo() {
+    //     if(adStep < adPushArray.length - 1) {
+    //         adStep++;
+    //         var tmpImg = new Image();
+    //         tmpImg.src = adPushArray[adStep];
+    //         tmpImg.onload = function() {
+    //             nativeCanvas.getContext('2d').drawImage(tmpImg, 0, 0);
+    //         }
+    //     }
+    // }
     $('a#header-toolbar-undo').on('click', function(e) {
         if(isSelectSegmentation()) {
             segUndo();
